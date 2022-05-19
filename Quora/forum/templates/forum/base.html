@@ -1,0 +1,113 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title> Quora</title>
+  <!-- <script src="https://kit.fontawesome.com/64922c7cb9.js" crossorigin="anonymous"></script> -->
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="{% static 'forum/css/main.css' %}">
+
+
+
+  <style>
+    body {
+      margin: 0 auto;
+      width: 90%;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .home,
+    a {
+      text-decoration: none;
+      /* color: black; */
+    }
+
+    .home:hover {
+      color: #262525;
+    }
+
+
+
+    .container {
+      margin: 0 auto;
+      width: 70%;
+    }
+
+    h1 {
+      margin: 0;
+      /* padding-left: 30%; */
+      background-color: skyblue;
+      padding: 20px 50px;
+    }
+
+    .post {
+      padding: 4px 20px;
+      margin: 15px 0;
+      /* background-color: rgb(215, 237, 247); */
+      border-radius: 10px;
+      border: 1px solid #d7edf7;
+      padding-top: 10px;
+    }
+
+    .post h2 {
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    .comment {
+      padding-left: 20px;
+      border-bottom: 1px solid #ded3df;
+      padding: 8px;
+    }
+
+    .comment p {
+      margin: 0;
+      padding-top: 5px;
+    }
+
+    .like {
+      color: white;
+      color: red;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <p style="float:right; margin-right:20px; color:black;">
+    {% if user.is_authenticated %}
+    Hello, <a href="{% url 'forum:account' %}" style="color:blue;"> {{ user.username }} </a>
+    <a href="{% url 'users:logout' %}"> Log out </a>
+
+    {% else %}
+    <a href="{% url 'users:register' %}"> Register </a>
+    -
+    <a href="{% url 'users:login' %}"> Log In </a>
+
+    {% endif %}
+  </p>
+
+
+  <div class="home">
+
+    <h1 ><a href="{% url 'forum:index' %}" class="" style="color: black">Forum</a></h1>
+
+  </div>
+
+  <div class="container">
+    {% block content %} {% endblock content %}
+  </div>
+
+
+  {% block scripts %} {% endblock scripts %}
+
+
+</body>
+
+</html>

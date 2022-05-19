@@ -1,0 +1,200 @@
+{% extends 'forum/base.html' %}
+
+{% block content %}
+
+{% load humanize %}
+
+{% if question %}
+<div class="post">
+  <div style=" text-transform:capitalize; font-size: 14px; display: inline;">
+    {{question.owner}}
+  </div>
+
+  {% if user.is_authenticated and request.user == question.owner %}
+  &nbsp;
+  <div style="color: grey; display: inline;">
+    <a href="#" style="font-size: 14px;">Edit</a>
+  </div>
+  {% endif %}
+
+  <h2>
+    {{ question.question_text }}
+  </h2>
+
+  <span style="font-size:14px; color:grey; display:block; margin-top:-10px; margin-bottom:10px;"> Added <span> {{question.pub_date | naturaltime}} </span></span>
+
+
+  <!-- &nbsp; &nbsp; -->
+  <span style="font-size:14px;"> Likes: <span class="like-count-{{question.id}}"> {{question.like_set.count}} </span></span>
+
+  &nbsp; &nbsp;
+  <span style="font-size:14px;"> Comments: <span class="comment-count-{{question.id}}"> {{question.comment_set.count}} </span></span>
+
+  <div class="" style="margin-top:10px;">
+
+
+    {% if user.is_authenticated %}
+    <a href="#" {% if like == 0 %} style="display: none;" {% endif %}>
+      <i class="fa fa-heart like like-click" data-question="{{question.id}}"></i>
+      <i class="fa fa-heart-o like like-click" data-question="{{question.id}}" style="display:none;"></i>
+    </a>
+
+    <a href="#" {% if like != 0 %} style="display: none;" {% endif %}>
+      <i class="fa fa-heart like like-click" data-question="{{question.id}}" style="display:none;"></i>
+      <i class="fa fa-heart-o like like-click" data-question="{{question.id}}"></i>
+    </a>
+    {% endif %}
+  </div>
+  <hr>
+
+  <div class="comment-wrapper">
+    {% for c in comment%}
+    <div class="comment">
+      <div class="" style=" text-transform:capitalize; font-size: 14px; color:black">
+        <b>{{c.owner}}</b>
+      </div>
+
+      <span style="font-size:14px; color:grey; display:block; "> Answered <span></span> {{c.pub_date | naturaltime}} </span>
+
+
+      <p>
+        {{ c.comment_text }}
+      </p>
+      <!-- <hr> -->
+    </div>
+
+
+    {% endfor %}
+  </div>
+
+  {% if user.is_authenticated %}
+  <!-- Comment Form -->
+  <div>
+    <p class="">Add Comment</p>
+    <div class="">
+      <textarea class="comment-text-{{question.id}}" style="width:100%; height: 50px; resize:none;"></textarea>
+      <button type="button" data-question="{{question.id}}" class="btn save-comment">Submit</button>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+
+{% endif %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"> </script>
+
+
+
+
+<script>
+  $(document).ready(function() {
+    $(".save-comment").on('click', function() {
+      // e.preventDefault();
+      var _questionid = $(this).data('question');
+      var _comment = $(".comment-text-" + _questionid).val();
+
+      console.log(_questionid);
+      console.log(_comment);
+
+      // ajax
+      $.ajax({
+        url: 'save-comment/',
+        type: "post",
+        dataType: "json",
+
+        data: {
+          comment: _comment,
+          question: _questionid,
+          csrfmiddlewaretoken: "{{csrf_token}}"
+        },
+
+
+        beforeSend: function() {
+          console.log("here");
+          $(".save-comment").addClass('disabled').text('saving...');
+        },
+        success: function(res) {
+          if (res.bool == true) {
+            $(".comment-text-" + _questionid).val('');
+
+            console.log(res);
+
+            // Append Element
+            var _ht = ' <div class = "comment">\
+                <div class="" style=" text-transform:capitalize; font-size: 14px;">\
+                  {{request.user}}\
+                </div>\
+                <p>' + _comment + '</p>\
+                </div>';
+
+            $(".comment-wrapper").append(_ht);
+          }
+          $(".save-comment").removeClass('disabled').text('Submit');
+
+
+          var prev_comment = $(".comment-count-" + _questionid).text();
+          console.log(prev_comment);
+
+          if (res.bool == false) {
+            new_comment = parseInt(prev_comment) - 1;
+            $(".comment-count-" + _questionid).text(new_comment);
+            console.log(new_comment);
+          } else {
+            new_comment = parseInt(prev_comment) + 1;
+            $(".comment-count-" + _questionid).text(new_comment);
+            console.log(new_comment);
+          }
+        }
+
+      });
+
+      // console.log(_questionid);
+    });
+
+
+
+
+    $(".like-click").on('click', function() {
+      var questionid = $(this).data('question');
+      // console.log(_questionid);
+
+      $.ajax({
+        url: 'save-like/',
+        type: "post",
+
+        dataType: "json",
+
+        data: {
+          question: questionid,
+          csrfmiddlewaretoken: "{{csrf_token}}"
+        },
+
+        success: function(res) {
+          console.log(res);
+          $(".fa-heart-o").toggle();
+          $(".fa-heart").toggle();
+
+          var prev_like = $(".like-count-" + questionid).text();
+          console.log(prev_like);
+
+          if (res.bool == false) {
+            new_like = parseInt(prev_like) - 1;
+            $(".like-count-" + questionid).text(new_like);
+            console.log(new_like);
+          } else {
+            new_like = parseInt(prev_like) + 1;
+            $(".like-count-" + questionid).text(new_like);
+            console.log(new_like);
+          }
+        }
+
+      });
+
+    });
+  });
+</script>
+
+
+
+{% endblock content %}

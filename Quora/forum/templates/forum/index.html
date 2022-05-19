@@ -1,0 +1,57 @@
+{% extends 'forum/base.html' %}
+
+{% block content %}
+<!-- <p>My question</p> -->
+
+{% load humanize %}
+
+{% if all_questions %}
+
+{% for q in all_questions %}
+<div class="post">
+  <div style=" text-transform:capitalize; font-size: 14px; display: inline;">
+    {{q.owner}}
+  </div>
+  {% if user.is_authenticated and request.user == q.owner %}
+  &nbsp;
+  <div style="color: grey; display: inline;">
+    <a href="#" style="font-size: 14px;">Edit</a>
+  </div>
+  {% endif %}
+
+  <h2>
+    <a href="question/{{ q.id }}/" style="color: black">
+      {{ q.question_text }}
+    </a>
+  </h2>
+  <span style="font-size:14px; color:grey; display:block; margin-top:-10px; margin-bottom:10px;"> Added <span></span> {{q.pub_date | naturaltime}} </span>
+
+
+  <span style="font-size:14px; color:grey;"> Likes: <span class="like-count-{{q.id}}"> {{q.like_set.count}} </span></span>
+  &nbsp; &nbsp;
+  <span style="font-size:14px; color:grey"> Comments: <span class="comment-count-{{q.id}}"> {{q.comment_set.count}} </span></span>
+
+
+</div>
+
+{% empty %}
+<p>There are no questions yet.</p>
+
+{% endfor %}
+
+{% endif %}
+
+<script>
+  const data = '{{data_json}}'
+  // console.log(data);
+  // console.log(typeof(data));
+
+  const mdata = data.replace(/&#x27;/, "'");
+  // console.log(mdata);
+
+  const rdata = JSON.parse(mdata.replace(/&quot;/g, '"'));
+  console.log(rdata);
+</script>
+
+
+{% endblock content %}

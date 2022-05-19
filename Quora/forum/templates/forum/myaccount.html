@@ -1,0 +1,110 @@
+{% extends 'forum/base.html' %}
+
+{% block content %}
+<!-- <p>My question</p> -->
+
+{% load humanize %}
+
+<div style="font-size: 30px; margin: 30px auto; font-weight: 600; display:flex; align-items: center;
+  justify-content: center;">
+  <div style="display: flex-item; ">
+    My Account
+  </div>
+
+</div>
+
+<hr>
+
+<br>
+
+
+<p style="font-size: 18px;">My Questions</p>
+
+{% if myQuestions %}
+
+{% for q in myQuestions %}
+<div class="post">
+  <div style=" text-transform:capitalize; font-size: 14px; display: inline;">
+    {{q.owner}}
+  </div>
+  {% if user.is_authenticated and request.user == q.owner %}
+  &nbsp;
+  <div style="color: grey; display: inline;">
+    <a href="#" style="font-size: 14px;">Edit</a>
+  </div>
+  {% endif %}
+
+  <h2>
+    <a href="question/{{ q.id }}/" style="color: black">
+      {{ q.question_text }}
+    </a>
+  </h2>
+  <span style="font-size:14px; color:grey; display:block; margin-top:-10px; margin-bottom:10px;"> Added <span></span> {{q.pub_date | naturaltime}} </span>
+
+  <span style="font-size:14px; color:grey;"> Likes: <span class="like-count-{{q.id}}"> {{q.like_set.count}} </span></span>
+  &nbsp; &nbsp;
+  <span style="font-size:14px; color:grey"> Comments: <span class="comment-count-{{q.id}}"> {{q.comment_set.count}} </span></span>
+
+</div>
+
+{% empty %}
+<p> You have not added Question yet. </p>
+
+{% endfor %}
+
+{% endif %}
+
+
+<br>
+
+<br>
+
+
+
+<p style="font-size: 18px;">My Comments</p>
+
+{% if myComments %}
+{% for c in myComments %}
+
+<div class="post">
+
+  <div>
+    <span style="color:grey;"> Answer : </span>
+     <span>{{ c.comment_text }}</span>
+  </div>
+
+  <p> <span style="color:grey;"> Question : </span>
+    <a href="question/{{ c.question.id }}/" style="color: black">
+      <b> {{ c.question }} </b>
+    </a>
+  </p>
+</div>
+
+
+
+<!-- <div class="post">
+  <div style=" text-transform:capitalize; font-size: 14px; display: inline;">
+    #{{c.owner}}
+  </div>
+
+  <p> #{{ c.question }} </p>
+
+  <h4>
+    #  {{ c.comment_text }}
+  </h4>
+
+</div> -->
+
+{% empty %}
+<p>You have not answered any Question yet.</p>
+
+{% endfor %}
+
+{% endif %}
+
+
+
+
+
+
+{% endblock content %}

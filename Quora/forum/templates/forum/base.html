@@ -81,8 +81,13 @@
 <body>
 
   <p style="float:right; margin-right:20px; color:black;">
-    {% if user.is_authenticated %}
-    Hello, <a href="{% url 'forum:account' %}" style="color:blue;"> {{ user.username }} </a>
+    {% if user.is_authenticated and user == request.user %}
+    {% comment %} Hello, <a href="{% url 'forum:account' %}" style="color:blue;"> {{ request.user }} </a> {% endcomment %}
+
+    Hi, <a href="{% url 'forum:profile' user.id %}" style="color:blue;"> {{ user.username }} </a>
+
+
+
     <a href="{% url 'users:logout' %}"> Log out </a>
 
     {% else %}

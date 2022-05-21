@@ -10,7 +10,7 @@
 {% for q in all_questions %}
 <div class="post">
   <div style=" text-transform:capitalize; font-size: 14px; display: inline;">
-    {{q.owner}}
+    <a href="{% url 'forum:profile' q.owner.profile.pk %}">{{q.owner}}</a>
   </div>
   {% if user.is_authenticated and request.user == q.owner %}
   &nbsp;

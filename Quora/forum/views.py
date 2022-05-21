@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.http import HttpResponse, JsonResponse
-from .models import Question, Comment, Like
+from .models import Question, Comment, Like, UserProfile
 
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -26,10 +25,57 @@ class QuestionListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         context["qs_json"] = json.dumps(list(Question.objects.values()),cls=DjangoJSONEncoder)
 
         return context
+
+
+class ProfileView(View):
+    def get(self, request, pk, *args, **kwargs ):
+        profile = UserProfile.objects.get(pk=pk)
+        p_user = profile.user
+
+        followers = profile.followers.all()
+        print(followers)
+
+        num_of_followers = len(followers)
+
+        if num_of_followers == 0:
+            is_following = False
+
+        for follower in followers:
+            if follower == request.user:
+                is_following = True
+                break
+            else:
+                is_following = False
+
+        myQuestions = Question.objects.filter(owner = p_user)
+        myComments = Comment.objects.filter(owner = p_user)
+
+        context = {'p_user': p_user, 'profile': profile , 'myQuestions' : myQuestions, 'myComments': myComments, 'num_of_followers' : num_of_followers, 'is_following' : is_following, 'followers': followers}
+
+        return render(request, 'forum/profile.html', context)
+
+
+class AddFollower(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        profile = UserProfile.objects.get(pk=pk)
+        profile.followers.add(request.user)
+        print(profile.pk)
+
+        return redirect(reverse('forum:profile', kwargs={'pk':profile.pk}))
+
+
+class RemoveFollower(LoginRequiredMixin, View):
+
+    def post(self, request, pk, *args, **kwargs):
+        profile = UserProfile.objects.get(pk=pk)
+        profile.followers.remove(request.user)
+        print(profile.pk)
+
+        return redirect(reverse('forum:profile', kwargs={'pk':profile.pk}))
+
 
 
 
@@ -38,12 +84,10 @@ def index(request):
 
     # data_json = json.dumps(list(Question.objects.values()),cls=DjangoJSONEncoder)
     # context = {'all_questions' : all_questions, 'data_json' : data_json}
-    
+
     context = {'all_questions' : all_questions}
 
     return render(request, 'forum/index.html', context)
-
-
 
 def account(request):
     all_questions = Question.objects.all()
@@ -67,8 +111,6 @@ def QuestionDetail(request, question_id):
     like = Like.objects.filter(question = q, owner = user).count()
 
     print(like);
-
-
 
     context = {
         'question' : q,

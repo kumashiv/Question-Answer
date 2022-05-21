@@ -80,7 +80,7 @@ class RemoveFollower(LoginRequiredMixin, View):
 
 
 def index(request):
-    all_questions = Question.objects.all()
+    all_questions = Question.objects.all().order_by('-pub_date')
 
     # data_json = json.dumps(list(Question.objects.values()),cls=DjangoJSONEncoder)
     # context = {'all_questions' : all_questions, 'data_json' : data_json}

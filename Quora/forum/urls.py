@@ -18,10 +18,16 @@ urlpatterns = [
     path('question/<int:question_id>/save-comment/', views.save_comment, name = 'save-comment'),
     # path('save-comment/', views.save_comment, name = 'save-comment'),
 
-
     path('question/<int:question_id>/save-like/', views.save_like, name = 'save-like'),
 
     path('account', views.account, name = 'account'),
+
+    path('profile/<int:pk>/', views.ProfileView.as_view(), name = 'profile'),
+
+    path('profile/<int:pk>/followers/add', views.AddFollower.as_view(), name = 'add-follower'),
+    path('profile/<int:pk>/followers/remove', views.RemoveFollower.as_view(), name = 'remove-follower'),
+
+
 
     path('main/', views.QuestionListView.as_view(), name = 'main-view'),
 ]

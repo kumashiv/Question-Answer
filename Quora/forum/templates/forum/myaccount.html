@@ -35,7 +35,8 @@
   {% endif %}
 
   <h2>
-    <a href="question/{{ q.id }}/" style="color: black">
+    <!-- <a href="question/{#{ q.id }}/" style="color: black"> -->
+    <a href="{% url 'forum:question-detail' q.id %}" style="color: black">
       {{ q.question_text }}
     </a>
   </h2>
@@ -70,11 +71,11 @@
 
   <div>
     <span style="color:grey;"> Answer : </span>
-     <span>{{ c.comment_text }}</span>
+    <span>{{ c.comment_text }}</span>
   </div>
 
   <p> <span style="color:grey;"> Question : </span>
-    <a href="question/{{ c.question.id }}/" style="color: black">
+    <a href = "{% url 'forum:question-detail' c.question.id %}"  style="color: black">
       <b> {{ c.question }} </b>
     </a>
   </p>

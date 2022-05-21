@@ -1,0 +1,171 @@
+{% extends 'forum/base.html' %}
+
+{% block content %}
+
+{% load humanize %}
+
+<div style="">
+
+
+  <br>
+
+  <div class="profile-container" style="background-color: #d6effa; color: #39112e; height:auto; width:100%; font-size:16px; padding : 20px; font-weight: 200; ">
+    <div style="font-size:30px; margin:30px auto; font-weight:600;">
+      <!-- {% if user.is_authenticated and request.user == q.owner %}
+      My Account
+      {% else %}
+      Account
+      {% endif %} -->
+
+      {% if user.is_authenticated and p_user == request.user %}
+      My Account
+      {% endif %}
+
+    </div>
+
+    <div class="profile" style="">
+      {% if profile.name %}
+      <h3>{{ profile.name }}</h3>
+      {% endif %}
+
+      {% if profile.bio %}
+      <p>{{ profile.bio }}</p>
+      {% endif %}
+
+      {% if profile.birth_date %}
+      <p>{{ profile.birth_date }}</p>
+      {% endif %}
+
+      {% if profile.address %}
+      <p>{{ profile.address }}</p>
+      {% endif %}
+
+    </div>
+
+    <div class="" style=" margin-top:40px; font-size: 16px;">
+
+      <b>Followers: {{num_of_followers}}</b>
+
+
+      {% if p_user == request.user %}
+      {% else %}
+      {% if is_following %}
+
+
+      <form action="{% url 'forum:remove-follower' profile.pk %}" method="post" class="">
+        {% csrf_token %}
+        <button type="submit" name="button" class="" style="margin-top:20px; padding:4px 6px;"> Unfollow </button>
+      </form>
+      {% else %}
+      <form action="{% url 'forum:add-follower' profile.pk %}" method="post" class="">
+        {% csrf_token %}
+        <button type="submit" name="button" class="" style="margin-top:20px; padding:4px 6px;"> Follow </button>
+      </form>
+
+      {% endif %}
+      {% endif %}
+
+
+      {% for follower in followers %}
+      <ul>
+        <!-- <li>{{follower}}</li> -->
+      </ul>
+
+      {% endfor %}
+    </div>
+  </div>
+
+
+
+
+
+</div>
+
+<br>
+
+<p style="font-size: 18px;">
+  Questions
+</p>
+
+
+{% if myQuestions %}
+
+{% for q in myQuestions %}
+<div class="post">
+  <div style=" text-transform:capitalize; font-size: 14px; display: inline;">
+    <a href="{% url 'forum:profile' q.owner.profile.pk %}"> {{q.owner}} </a>
+    <p>{{q.owner.profile.pk}}</p>
+  </div>
+  {% if user.is_authenticated and request.user == q.owner %}
+  &nbsp;
+  <div style="color: grey; display: inline;">
+    <a href="#" style="font-size: 14px;">Edit</a>
+  </div>
+  {% endif %}
+
+  <h2>
+    <!-- <a href="question/{#{ q.id }}/" style="color: black"> -->
+
+    <a href="{% url 'forum:question-detail' q.id %}" style="color: black">
+
+      {{ q.question_text }}
+    </a>
+  </h2>
+  <span style="font-size:14px; color:grey; display:block; margin-top:-10px; margin-bottom:10px;"> Added <span></span> {{q.pub_date | naturaltime}} </span>
+
+  <span style="font-size:14px; color:grey;"> Likes: <span class="like-count-{{q.id}}"> {{q.like_set.count}} </span></span>
+  &nbsp; &nbsp;
+  <span style="font-size:14px; color:grey"> Comments: <span class="comment-count-{{q.id}}"> {{q.comment_set.count}} </span></span>
+
+</div>
+
+{% empty %}
+<p> You have not added Question yet. </p>
+
+{% endfor %}
+
+{% else %}
+<p> You have not added question yet. </p>
+
+{% endif %}
+
+
+<br>
+
+<br>
+
+
+
+<p style="font-size: 18px;">Comments</p>
+
+{% if myComments %}
+{% for c in myComments %}
+
+<div class="post">
+
+  <div>
+    <span style="color:grey;"> Answer : </span>
+    <span>{{ c.comment_text }}</span>
+  </div>
+
+  <p> <span style="color:grey;"> Question : </span>
+    <a href="{% url 'forum:question-detail' c.question.id %}" style="color: black;">
+      <b> {{ c.question }} </b>
+    </a>
+    <a href="{% url 'forum:profile' c.question.owner.profile.pk %}" style="color: grey;">({{c.question.owner}})</a>
+  </p>
+</div>
+
+
+
+{% empty %}
+<p>You have not answered any Question yet.</p>
+
+{% endfor %}
+
+{% else %}
+<p> You have not answered any question yet. </p>
+
+{% endif %}
+
+{% endblock content %}

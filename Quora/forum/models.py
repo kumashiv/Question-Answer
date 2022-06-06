@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from django.core.mail import send_mail
+from django.conf import settings
+
 # Create your models here.
 class Question(models.Model):
     question_text = models.CharField(max_length = 200)
@@ -44,6 +47,18 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         print('created')
         UserProfile.objects.create(user=instance)
+
+        subject = 'Welcome'
+        message = 'Your profile was created successfully'
+        email = '' # Email sending to
+
+        send_mail(
+        subject,
+        message,
+        settings.EMAIL_HOST_USER,
+        [email],
+        fail_silently=False,
+        )
 
 
 @receiver(post_save, sender=User)

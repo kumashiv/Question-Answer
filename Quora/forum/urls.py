@@ -8,7 +8,6 @@ urlpatterns = [
     path('', views.index, name = 'index'),
 
 
-
     path('question/<int:question_id>/', views.QuestionDetail, name = 'question-detail'),
     path('question/create/', views.QuestionCreate.as_view(), name='question-create'),
 

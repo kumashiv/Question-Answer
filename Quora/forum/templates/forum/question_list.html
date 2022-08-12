@@ -5,7 +5,7 @@
   .search-bar {
     margin: 0 auto;
     font-size: 16px;
-    width: 50%;
+    width: 60%;
     padding: 10px;
     position: center;
 
@@ -29,17 +29,23 @@
     transform: translateY(-60px);
 
     visibility: hidden;
+    display: none;
+
+    /*
+    z-index: 200;
+    width: auto;
+    position: absolute;
+    */
+
   }
 
   .search-overlay {
     margin: 0 auto;
 
-    width: 50%;
+    width: 60%;
     height: auto;
     background-color: #fafafa;
     padding: 10px 10px 10px 10px;
-
-
   }
 
   .item-wrapper {
@@ -50,12 +56,16 @@
   .item {
     font-size: 16px;
     line-height: 30px;
-
-
-
   }
 
-  .item {}
+  .item a {
+    text-decoration: none;
+    color: black;
+  }
+
+  #box {
+    position: relative;
+  }
 </style>
 
 <!-- <div class="search" style="margin:auto 0; width:100%; display:flex; ">
@@ -84,13 +94,13 @@
 </div>
 
 
-<div id="box">
+<!-- <div id="box">
   {% for item in object_list %}
   <b>{{item}}</b>
   <br>
   {% endfor %}
 
-</div>
+</div> -->
 
 
 {% endblock content %}
@@ -102,7 +112,7 @@
   document.getElementById("search-wrapper").style.visibility = 'hidden';
 
   const data = '{{qs_json}}'
-  // console.log(data);
+  console.log(data);
   // const rdata = JSON.parse(data.replace(/&quot;/g, '"'));
   // console.log(rdata);
 
@@ -118,7 +128,6 @@
   const input = document.getElementById('search_here');
   // console.log(input.length);
 
-
   // const search = document.getElementById('search_here').value;
   // console.log(search);
 
@@ -126,52 +135,81 @@
   const searches = document.getElementById('search-overlay');
 
   let filteredArr = [];
+  console.log(filteredArr);
 
   var b = document.querySelector(".search-wrapper");
 
-  input.addEventListener('keyup', (e) => {
+
+  input.addEventListener('keyup', (e)=> {
     // console.log(search.length);
 
     // box.innerHTML = "";
-    searches.innerHTML = "";
+    searches.innerHTML = '';
 
-    filteredArr = rdata.filter(question => question['question_text'].includes(e.target.value));
+    // console.log(input.value)
+    console.log(e.target.value)
+
+    // filteredArr = rdata.filter((question) => question['question_text'].includes(e.target.value));
+    filteredArr = rdata.filter((question)=> question['question_text'].includes(e.target.value));
     console.log(filteredArr);
 
-
-    if (filteredArr.length > 0) {
+    if(filteredArr.length > 0){
+      // searches.innerHTML = ""
       b.style.display = 'block';
-      filteredArr.map(question => {
+      b.style.visibility = 'visible';
+
+      filteredArr.map(question=>{
         // box.innerHTML += `<b>  ${question['question_text']} </b><br>`
-
-        my_url = "{% url 'forum:index' %}"
-
-        console.log(my_url);
 
 
         searches.innerHTML += `<div class="item-wrapper" id="item-wrapper">
-          <span class="item" id="item"><a href=" ${my_url}question/${question["id"]} ">${question["question_text"]}</a><span><br>
+          <span class="item" id="item">
+            <a href="#">${question["question_text"]}</a>
+            <span><br>
           </div>`
 
+        // my_url = "{% url 'forum:index' %}"
+        //
+        // searches.innerHTML += `<div class="item-wrapper" id="item-wrapper">
+        //   <span class="item" id="item">
+        //     <a href="${my_url}question/${question["id"]}">${question["question_text"]}</a>
+        //     <span><br>
+        //   </div>`
 
-      });
+        // console.log(my_url);
+
+      }
+
+      );
     }
+    else {
+     console.log('not empty');
+     // b.style.display = 'none';
+     // b.style.display = 'block';
+     // b.style.visibility = 'visible';
+     searches.innerHTML = `<div class="item-wrapper" id="item-wrapper">
+     <span class="item" id="item"> No items found<span><br>
+       </div>`
+   }
 
-    if (input.value == "" || filteredArr.length < 1) {
-      console.log('empty');
-      // b.style.display = 'none';
+    // if (input.value == "" || filteredArr.length < 1) {
+    //   console.log('empty');
+    //
+    //   b.style.display = 'block';
+    //   b.style.visibility = 'visible';
+    //
+    //
+    //   // b.style.display = 'none';
+    //
+    //   // b.style.visibility = 'hidden';
+    //
+    //   // searches.innerHTML += `<div class="item-wrapper" id="item-wrapper">
+    //   //   <span class="item" id="item"> No items found<span><br>
+    //   //   </div>`
+    //   searches.innerHTML = "";
+    //
+    // }
 
-      // b.style.visibility = 'hidden';
-
-      searches.innerHTML += `<div class="item-wrapper" id="item-wrapper">
-        <span class="item" id="item"> No items found<span><br>
-        </div>`
-
-    } else {
-      console.log('not empty');
-      // b.style.display = 'block';
-      b.style.visibility = 'visible';
-    }
 
   });
 </script>

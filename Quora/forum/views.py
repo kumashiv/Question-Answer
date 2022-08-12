@@ -19,6 +19,8 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
 
+
+# Search functionality
 class QuestionListView(ListView):
     model = Question
     # template_name = 'main.html'

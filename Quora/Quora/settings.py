@@ -122,7 +122,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'shivkkumar0007@gmail.com' # Email sending from
-EMAIL_HOST_PASSWORD = '' # Use app passwors for gmail
+EMAIL_HOST_PASSWORD = 'carbqpcljvxobjaz' # Use app passwors for gmail
 
 
 # Static files (CSS, JavaScript, Images)

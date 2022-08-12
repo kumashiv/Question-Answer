@@ -32,6 +32,19 @@
     }
 
 
+    /* p input[type="text"] */
+
+    #id_question_text{
+      /* width: 500px; */
+      width: 80%;
+      line-height: 20px;
+    }
+
+    a{
+      text-decoration: none;
+    }
+
+
 
     .container {
       margin: 0 auto;
@@ -74,6 +87,17 @@
       color: white;
       color: red;
     }
+
+    #ask_question{
+      border-radius: 10px;
+      font-size: 15px;
+      /* color: #fff; */
+      /* background-color: red; */
+      line-height: : 20px;
+      /* border: none; */
+      border: 2px black;
+      padding: 3px 8px;
+    }
   </style>
 
 </head>
@@ -84,8 +108,24 @@
     {% if user.is_authenticated and user == request.user %}
     {% comment %} Hello, <a href="{% url 'forum:account' %}" style="color:blue;"> {{ request.user }} </a> {% endcomment %}
 
-    Hi, <a href="{% url 'forum:profile' user.id %}" style="color:blue;"> {{ user.username }} </a>
+    <span style=" margin-right:12px; color:black;">
 
+      <button type="button" name="button" id="ask_question">
+        <!-- <a href="{% url 'forum:main-view' %}" style="color:black;">Add Question </a> -->
+        <a href="{% url 'forum:question-create' %}" style="color:black;">Add Question </a>
+
+      </button>
+
+    </span>
+
+
+    <span style=" margin-right:12px; color:black;">
+      <a href="{% url 'forum:main-view' %}" style="color:black;">
+        <i class="fa fa-search"></i>
+      </a>
+    </span>
+
+    Hi, <a href="{% url 'forum:profile' user.id %}" style="color:blue;"> {{ user.username }} </a>
 
 
     <a href="{% url 'users:logout' %}"> Log out </a>
@@ -101,7 +141,7 @@
 
   <div class="home">
 
-    <h1 ><a href="{% url 'forum:index' %}" class="" style="color: black">Forum</a></h1>
+    <h1><a href="{% url 'forum:index' %}" class="" style="color: black">Forum</a></h1>
 
   </div>
 

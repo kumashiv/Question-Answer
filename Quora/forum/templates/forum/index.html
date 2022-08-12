@@ -11,13 +11,14 @@
 
 {% for q in all_questions %}
 <div class="post">
-  <div style=" text-transform:capitalize; font-size: 14px; display: inline;">
+  <div style=" text-transform:capitalize; font-size: 14px; display: inline; color:blue;">
     <a href="{% url 'forum:profile' q.owner.profile.pk %}">{{q.owner}}</a>
   </div>
   {% if user.is_authenticated and request.user == q.owner %}
   &nbsp;
   <div style="color: grey; display: inline;">
-    <a href="#" style="font-size: 14px;">Edit</a>
+    <!-- <a href="#" style="font-size: 14px;">Edit</a> -->
+    <a href="question/{{ q.id }}/update" style="font-size: 14px;">Edit</a>
   </div>
   {% endif %}
 

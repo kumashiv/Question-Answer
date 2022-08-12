@@ -50,7 +50,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 
         subject = 'Welcome'
         message = 'Your profile was created successfully'
-        email = '' # Email sending to
+        email = 'kumar.shiv68@yahoo.com' # Email sending to
 
         send_mail(
         subject,

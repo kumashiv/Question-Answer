@@ -12,13 +12,13 @@ Home
 
 <img width="400" alt="Home page Screenshot" src="https://user-images.githubusercontent.com/70986603/184270927-40e30f35-002b-4a7e-8d15-0044a0c2ef15.png">
 
-User Profile
-
-<img width="400" alt="Home page Screenshot" src="https://user-images.githubusercontent.com/70986603/184271245-4cca2825-d686-481b-bb14-9dee39ad4546.png">
-
 Like and Comment
 
 <img width="400" alt="Home page Screenshot" src="https://user-images.githubusercontent.com/70986603/184271292-006e763b-ad63-4197-abc8-8754f2d95f89.png">
+
+User Profile
+
+<img width="400" alt="Home page Screenshot" src="https://user-images.githubusercontent.com/70986603/184271245-4cca2825-d686-481b-bb14-9dee39ad4546.png">
 
 Search content
 

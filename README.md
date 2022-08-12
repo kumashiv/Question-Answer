@@ -8,4 +8,4 @@ Question Answer site project
 
 SAMPLE PAGES :
 Home
-<img width="400" alt="Home page Screenshot" src="(https://user-images.githubusercontent.com/70986603/184270927-40e30f35-002b-4a7e-8d15-0044a0c2ef15.png)">
+<img width="400" alt="Home page Screenshot" src="https://user-images.githubusercontent.com/70986603/184270927-40e30f35-002b-4a7e-8d15-0044a0c2ef15.png">

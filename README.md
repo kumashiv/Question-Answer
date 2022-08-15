@@ -18,7 +18,7 @@ Like and Comment
 
 User Profile
 
-<img width="400" alt="User Profile" src="https://user-images.githubusercontent.com/70986603/184271245-4cca2825-d686-481b-bb14-9dee39ad4546.png">
+<img width="400" alt="User Profile" src="https://user-images.githubusercontent.com/70986603/184573166-293e42f9-9896-424f-9da2-02ed66c12102.png">
 
 Search content
 
